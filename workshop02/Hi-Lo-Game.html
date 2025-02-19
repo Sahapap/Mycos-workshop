@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .dice {
+            font-size: 24px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dice Game</h1>
+        <p>Place your bet and roll the dice!</p>
+        <label for="bet">Enter Bet Amount:</label>
+        <input type="number" id="bet" min="1" value="1">
+        <br>
+        <label>
+            <input type="radio" name="betType" value="high" checked> High (>= 12)
+        </label>
+        <label>
+            <input type="radio" name="betType" value="mid"> Mid (= 11, 5x reward)
+        </label>
+        <label>
+            <input type="radio" name="betType" value="low"> Low (<= 10)
+        </label>
+        <br>
+        <button onclick="rollDice()">Roll Dice</button>
+        <div>
+            <p class="dice" id="diceResults">🎲 🎲 🎲</p>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script>
+        function rollDice() {
+            const dice1 = Math.floor(Math.random() * 6) + 1;
+            const dice2 = Math.floor(Math.random() * 6) + 1;
+            const dice3 = Math.floor(Math.random() * 6) + 1;
+            const sum = dice1 + dice2 + dice3;
+            document.getElementById("diceResults").innerText = `🎲 ${dice1} 🎲 ${dice2} 🎲 ${dice3}`;
+            
+            const betAmount = parseInt(document.getElementById("bet").value);
+            const betType = document.querySelector('input[name="betType"]:checked').value;
+            let message = `You rolled ${sum}. `;
+            let reward = 0;
+            
+            if (betType === "high" && sum >= 12) {
+                reward = betAmount * 2;
+                message += `You won ${reward}!`;
+            } else if (betType === "mid" && sum === 11) {
+                reward = betAmount * 5;
+                message += `Jackpot! You won ${reward}!`;
+            } else if (betType === "low" && sum <= 10) {
+                reward = betAmount * 2;
+                message += `You won ${reward}!`;
+            } else {
+                message += "You lost. Try again!";
+            }
+            
+            document.getElementById("result").innerText = message;
+        }
+    </script>
+</body>
+</html>
